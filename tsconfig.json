@@ -1,0 +1,27 @@
+{
+  "include": [
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "config/**/*.ts",
+    "scripts/**/*.mjs",
+    "test/**/*.ts",
+    ".react-router/types/**/*",
+    "*.ts"
+  ],
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "types": ["node", "vite/client", "@testing-library/jest-dom"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "rootDirs": [".", "./.react-router/types"]
+  }
+}

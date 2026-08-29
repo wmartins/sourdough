@@ -1,0 +1,15 @@
+@import '@astryxdesign/core/reset.css';
+@import '@astryxdesign/core/astryx.css';
+@import '@astryxdesign/theme-butter/theme.css';
+
+@layer product {
+  html,
+  body,
+  body > [data-astryx-theme] {
+    min-height: 100%;
+  }
+
+  body {
+    background: var(--color-background-body);
+  }
+}
