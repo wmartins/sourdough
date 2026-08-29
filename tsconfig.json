@@ -2,7 +2,6 @@
   "include": [
     "app/**/*.ts",
     "app/**/*.tsx",
-    "config/**/*.ts",
     "scripts/**/*.mjs",
     "test/**/*.ts",
     ".react-router/types/**/*",

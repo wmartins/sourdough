@@ -1,9 +1,7 @@
 # Sourdough
 
 A static React Router application for calculating and sharing a sourdough
-recipe. Product and implementation decisions live in
-[`docs/website-plan.md`](./docs/website-plan.md) and
-[`docs/recipe-calculation.md`](./docs/recipe-calculation.md).
+recipe.
 
 ## Requirements
 
@@ -34,6 +32,9 @@ npm run build
 production artifact with both React Router's basename and Vite's asset base set
 to `/sourdough/`, then flattens React Router 7's basename-prefixed prerender
 directory for GitHub Pages; serve that artifact with `npm run preview:pages`.
+
+Biome handles source-code linting and formatting. Prettier is retained only for
+Markdown files, which Biome does not format yet.
 
 Set `BASE_PATH` to another path when invoking React Router or Vite directly to
 target a future project path or `/` for a custom domain.

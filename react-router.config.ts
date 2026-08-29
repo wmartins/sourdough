@@ -1,11 +1,11 @@
 import type { Config } from '@react-router/dev/config';
 
-import { resolveBasePath } from './config/base-path.ts';
+import { resolveBase } from './base-path.ts';
 
-const { basename } = resolveBasePath(process.env.BASE_PATH);
+const base = resolveBase(process.env.BASE_PATH);
 
 export default {
-  basename,
+  basename: base,
   future: {
     v8_middleware: true,
     v8_passThroughRequests: true,
