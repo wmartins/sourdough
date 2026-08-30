@@ -28,6 +28,12 @@ describe('parseRecipeSearchParams', () => {
     expect(recipe).toEqual(recipeDefaults);
   });
 
+  it('falls back for non-positive weight and negative percentages', () => {
+    expect(
+      parseRecipeSearchParams('?weight=0&hydration=-1&starter=-2&salt=-3'),
+    ).toEqual(recipeDefaults);
+  });
+
   it('ignores unrelated query parameters', () => {
     expect(parseRecipeSearchParams('?weight=900&campaign=summer')).toEqual({
       ...recipeDefaults,

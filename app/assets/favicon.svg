@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Sourdough loaf</title>
+  <style>
+    svg { color: CanvasText; }
+  </style>
+  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" d="M11 45c0-13 9-26 21-26s21 13 21 26c0 5-4 8-9 8H20c-5 0-9-3-9-8Z"/>
+  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="4" d="m24 25-5 8m17-12-6 10m17-4-7 9"/>
+</svg>

@@ -1,14 +1,27 @@
 import { recipeDefaults } from '../domain/recipe/defaults';
 import type { RecipeInput } from '../domain/recipe/types';
 
-function parseValue(value: string | null, fallback: number): number {
+export function isRecipeValueValid(
+  field: keyof RecipeInput,
+  value: number,
+): boolean {
+  return (
+    Number.isFinite(value) && (field === 'weight' ? value > 0 : value >= 0)
+  );
+}
+
+function parseValue(
+  field: keyof RecipeInput,
+  value: string | null,
+  fallback: number,
+): number {
   if (!value?.trim()) {
     return fallback;
   }
 
   const parsed = Number(value);
 
-  return Number.isFinite(parsed) ? parsed : fallback;
+  return isRecipeValueValid(field, parsed) ? parsed : fallback;
 }
 
 export function parseRecipeSearchParams(
@@ -18,10 +31,18 @@ export function parseRecipeSearchParams(
     typeof source === 'string' ? new URLSearchParams(source) : source;
 
   return {
-    weight: parseValue(params.get('weight'), recipeDefaults.weight),
-    hydration: parseValue(params.get('hydration'), recipeDefaults.hydration),
-    starter: parseValue(params.get('starter'), recipeDefaults.starter),
-    salt: parseValue(params.get('salt'), recipeDefaults.salt),
+    weight: parseValue('weight', params.get('weight'), recipeDefaults.weight),
+    hydration: parseValue(
+      'hydration',
+      params.get('hydration'),
+      recipeDefaults.hydration,
+    ),
+    starter: parseValue(
+      'starter',
+      params.get('starter'),
+      recipeDefaults.starter,
+    ),
+    salt: parseValue('salt', params.get('salt'), recipeDefaults.salt),
   };
 }
 

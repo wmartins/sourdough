@@ -1,49 +1,73 @@
+import { Grid } from '@astryxdesign/core/Grid';
 import { Heading } from '@astryxdesign/core/Heading';
 import { Layout, LayoutContent, VStack } from '@astryxdesign/core/Layout';
-import { Section } from '@astryxdesign/core/Section';
 import { Text } from '@astryxdesign/core/Text';
 
+import { AppearanceSelector } from '../../components/AppearanceSelector';
+import { CalculatorForm } from '../../components/CalculatorForm';
+import { RecipeResult } from '../../components/RecipeResult';
 import { useRecipe } from '../../hooks/useRecipe';
 import type { Route } from './+types/route';
 
+const title = 'Sourdough recipe calculator';
+const description =
+  'Scale flour, water, starter, and salt with true dough hydration.';
+const canonicalUrl = 'https://wmartins.github.io/sourdough/';
+
 export const meta: Route.MetaFunction = () => [
-  { title: 'Sourdough recipe calculator' },
-  {
-    name: 'description',
-    content: 'Scale a simple sourdough recipe with true dough hydration.',
-  },
+  { title },
+  { name: 'description', content: description },
+  { tagName: 'link', rel: 'canonical', href: canonicalUrl },
+  { property: 'og:type', content: 'website' },
+  { property: 'og:title', content: title },
+  { property: 'og:description', content: description },
+  { property: 'og:url', content: canonicalUrl },
+  { name: 'twitter:card', content: 'summary' },
+  { name: 'twitter:title', content: title },
+  { name: 'twitter:description', content: description },
 ];
 
 export default function IndexRoute() {
-  const { recipe } = useRecipe();
+  const { draft, isComplete, recipe, result, updateDraft } = useRecipe();
 
   return (
     <Layout
       height="auto"
-      contentWidth="60ch"
+      contentWidth={1100}
       padding={6}
       content={
         <LayoutContent role="main" isScrollable={false}>
-          <VStack gap={6}>
-            <VStack gap={2}>
-              <Heading level={1} type="display-2" textWrap="balance">
-                Better bread starts with a balanced recipe.
-              </Heading>
-              <Text as="p" type="large" color="secondary">
-                A warm, precise sourdough calculator is taking shape here.
-              </Text>
-            </VStack>
-
-            <Section variant="muted">
+          <VStack gap={8}>
+            <Grid columns={{ minWidth: 260, max: 2, repeat: 'fit' }} gap={6}>
               <VStack gap={2}>
-                <Heading level={2}>The workbench is warming up</Heading>
-                <Text as="p">
-                  Loaded recipe: {recipe.weight} g at {recipe.hydration}%
-                  hydration, with {recipe.starter}% starter and {recipe.salt}%
-                  salt. Calculator controls arrive in the next milestone.
+                <Heading level={1} type="display-2" textWrap="balance">
+                  Build a loaf that adds up.
+                </Heading>
+                <Text as="p" type="large" color="secondary">
+                  Set your dough target and baker’s percentages. We’ll account
+                  for the flour and water already in your starter.
                 </Text>
               </VStack>
-            </Section>
+              <AppearanceSelector />
+            </Grid>
+
+            <Grid columns={{ minWidth: 320, max: 2, repeat: 'fit' }} gap={6}>
+              <VStack gap={4}>
+                <VStack gap={1}>
+                  <Heading level={2}>Recipe controls</Heading>
+                  <Text color="secondary">
+                    Changes update the recipe and its shareable URL.
+                  </Text>
+                </VStack>
+                <CalculatorForm draft={draft} updateDraft={updateDraft} />
+              </VStack>
+
+              <RecipeResult
+                input={recipe}
+                isCurrent={isComplete}
+                result={result}
+              />
+            </Grid>
           </VStack>
         </LayoutContent>
       }

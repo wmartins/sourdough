@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
+import { calculateRecipe } from '../domain/recipe/calculate';
 import { recipeDefaults } from '../domain/recipe/defaults';
 import type { RecipeInput } from '../domain/recipe/types';
 import {
+  isRecipeValueValid,
   parseRecipeSearchParams,
   serializeRecipeSearchParams,
 } from '../lib/recipeSearchParams';
@@ -53,7 +55,7 @@ export function useRecipe() {
 
     const committed = parseDraft(value);
 
-    if (committed === null) {
+    if (committed === null || !isRecipeValueValid(field, committed)) {
       return;
     }
 
@@ -63,5 +65,12 @@ export function useRecipe() {
     setSearchParams(serializeRecipeSearchParams(next), { replace: true });
   }
 
-  return { draft, recipe, updateDraft };
+  const result = useMemo(() => calculateRecipe(recipe), [recipe]);
+  const isComplete = (Object.keys(draft) as RecipeField[]).every((field) => {
+    const value = parseDraft(draft[field]);
+
+    return value !== null && isRecipeValueValid(field, value);
+  });
+
+  return { draft, isComplete, recipe, result, updateDraft };
 }

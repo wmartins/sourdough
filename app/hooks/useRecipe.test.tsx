@@ -47,6 +47,18 @@ describe('useRecipe', () => {
       starter: '18.5',
       salt: '2.1',
     });
+    expect(result.current.form.result.flour).toBeCloseTo(433.827_224_563, 6);
+  });
+
+  it('keeps unusable drafts out of the recipe and URL', () => {
+    const { result } = setup(['/']);
+
+    act(() => result.current.form.updateDraft('weight', '-10'));
+
+    expect(result.current.form.draft.weight).toBe('-10');
+    expect(result.current.form.isComplete).toBe(false);
+    expect(result.current.form.recipe.weight).toBe(750);
+    expect(result.current.location.search).toBe('');
   });
 
   it('keeps temporary text local and replaces the URL for valid edits', async () => {

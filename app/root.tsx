@@ -5,8 +5,6 @@ import {
   VStack,
 } from '@astryxdesign/core/Layout';
 import { Text } from '@astryxdesign/core/Text';
-import { Theme } from '@astryxdesign/core/theme';
-import { butterTheme } from '@astryxdesign/theme-butter/built';
 import {
   isRouteErrorResponse,
   Links,
@@ -16,22 +14,28 @@ import {
   ScrollRestoration,
 } from 'react-router';
 
+import favicon from './assets/favicon.svg?url';
+import { AppearanceProvider } from './components/AppearanceProvider';
+import { restoreAppearanceScript } from './lib/appearance';
 import type { Route } from './+types/root';
 import './styles.css';
 
+export const links: Route.LinksFunction = () => [
+  { rel: 'icon', href: favicon, type: 'image/svg+xml' },
+];
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-astryx-theme="butter">
+    <html lang="en" data-astryx-theme="butter" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script>{restoreAppearanceScript}</script>
         <Meta />
         <Links />
       </head>
       <body>
-        <Theme theme={butterTheme} mode="system">
-          {children}
-        </Theme>
+        <AppearanceProvider>{children}</AppearanceProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
