@@ -3,6 +3,7 @@ import { Layout, LayoutContent, VStack } from '@astryxdesign/core/Layout';
 import { Section } from '@astryxdesign/core/Section';
 import { Text } from '@astryxdesign/core/Text';
 
+import { useRecipe } from '../../hooks/useRecipe';
 import type { Route } from './+types/route';
 
 export const meta: Route.MetaFunction = () => [
@@ -14,6 +15,8 @@ export const meta: Route.MetaFunction = () => [
 ];
 
 export default function IndexRoute() {
+  const { recipe } = useRecipe();
+
   return (
     <Layout
       height="auto"
@@ -35,8 +38,9 @@ export default function IndexRoute() {
               <VStack gap={2}>
                 <Heading level={2}>The workbench is warming up</Heading>
                 <Text as="p">
-                  The foundation is ready for flour, water, starter, and salt.
-                  Calculator controls arrive in the next milestone.
+                  Loaded recipe: {recipe.weight} g at {recipe.hydration}%
+                  hydration, with {recipe.starter}% starter and {recipe.salt}%
+                  salt. Calculator controls arrive in the next milestone.
                 </Text>
               </VStack>
             </Section>
