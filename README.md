@@ -33,11 +33,27 @@ production artifact with both React Router's basename and Vite's asset base set
 to `/sourdough/`, then flattens React Router 7's basename-prefixed prerender
 directory for GitHub Pages; serve that artifact with `npm run preview:pages`.
 
+Run `npm run test:e2e` to build that production artifact and exercise it with
+Playwright at `/sourdough/`. The suite covers direct loading, shared recipes,
+appearance preferences, responsive layout, accessibility, and static output.
+
 Biome handles source-code linting and formatting. Prettier is retained only for
 Markdown files, which Biome does not format yet.
 
 Set `BASE_PATH` to another path when invoking React Router or Vite directly to
 target a future project path or `/` for a custom domain.
+
+## Deployment
+
+The GitHub Pages workflow validates pull requests and deploys pushes to `main`
+or manually dispatched runs. In the repository settings, choose **GitHub
+Actions** as the Pages source. The workflow publishes `build/client` directly;
+generated files are not committed to a deployment branch.
+
+Before the first deployment, confirm that the `github-pages` environment is
+allowed to deploy from `main`. The production URL is
+<https://wmartins.github.io/sourdough/>. A static `404.html` is included for
+unknown paths.
 
 ## Astryx
 

@@ -54,7 +54,9 @@ export default function IndexRoute() {
             <Grid columns={{ minWidth: 320, max: 2, repeat: 'fit' }} gap={6}>
               <VStack gap={4}>
                 <VStack gap={1}>
-                  <Heading level={2}>Recipe controls</Heading>
+                  <Heading id="calculator-heading" level={2}>
+                    Recipe controls
+                  </Heading>
                   <Text color="secondary">
                     Changes update the recipe and its shareable URL.
                   </Text>

@@ -36,7 +36,10 @@ function changeDraft(
 
 export function CalculatorForm({ draft, updateDraft }: CalculatorFormProps) {
   return (
-    <form onSubmit={(event) => event.preventDefault()}>
+    <form
+      aria-labelledby="calculator-heading"
+      onSubmit={(event) => event.preventDefault()}
+    >
       <FormLayout defaultOptionality="required">
         <NumberInput
           label="Total dough weight"
