@@ -4,16 +4,16 @@ import { calculateRecipe } from './calculate';
 import { recipeDefaults } from './defaults';
 
 describe('calculateRecipe', () => {
-  it('calculates the default 750 g recipe', () => {
+  it('calculates the default 900 g recipe', () => {
     const recipe = calculateRecipe(recipeDefaults);
 
-    expect(recipe.hydration).toBe(70);
-    expect(recipe.flour).toBeCloseTo(396.825_396_825_396_8);
-    expect(recipe.water).toBeCloseTo(265.873_015_873_015_85);
-    expect(recipe.starter.total).toBeCloseTo(79.365_079_365_079_37);
-    expect(recipe.starter.flour).toBeCloseTo(39.682_539_682_539_684);
-    expect(recipe.starter.water).toBeCloseTo(39.682_539_682_539_684);
-    expect(recipe.salt).toBeCloseTo(7.936_507_936_507_937);
+    expect(recipe.hydration).toBe(65);
+    expect(recipe.flour).toBeCloseTo(478.405_315_614_617_96);
+    expect(recipe.water).toBeCloseTo(290.033_222_591_362_1);
+    expect(recipe.starter.total).toBeCloseTo(119.601_328_903_654_49);
+    expect(recipe.starter.flour).toBeCloseTo(59.800_664_451_827_245);
+    expect(recipe.starter.water).toBeCloseTo(59.800_664_451_827_245);
+    expect(recipe.salt).toBeCloseTo(11.960_132_890_365_449);
   });
 
   it('preserves the requested total dough weight', () => {

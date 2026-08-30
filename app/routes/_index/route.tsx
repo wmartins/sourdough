@@ -1,9 +1,13 @@
+import { AppShell } from '@astryxdesign/core/AppShell';
+import { Card } from '@astryxdesign/core/Card';
+import { Center } from '@astryxdesign/core/Center';
 import { Grid } from '@astryxdesign/core/Grid';
 import { Heading } from '@astryxdesign/core/Heading';
 import { Layout, LayoutContent, VStack } from '@astryxdesign/core/Layout';
+import { TopNav, TopNavHeading } from '@astryxdesign/core/TopNav';
 import { Text } from '@astryxdesign/core/Text';
 
-import { AppearanceSelector } from '../../components/AppearanceSelector';
+import { AppearanceToggle } from '../../components/AppearanceToggle';
 import { CalculatorForm } from '../../components/CalculatorForm';
 import { RecipeResult } from '../../components/RecipeResult';
 import { useRecipe } from '../../hooks/useRecipe';
@@ -31,48 +35,78 @@ export default function IndexRoute() {
   const { draft, isComplete, recipe, result, updateDraft } = useRecipe();
 
   return (
-    <Layout
+    <AppShell
+      contentPadding={0}
       height="auto"
-      contentWidth={1100}
-      padding={6}
-      content={
-        <LayoutContent role="main" isScrollable={false}>
-          <VStack gap={8}>
-            <Grid columns={{ minWidth: 260, max: 2, repeat: 'fit' }} gap={6}>
-              <VStack gap={2}>
-                <Heading level={1} type="display-2" textWrap="balance">
-                  Build a loaf that adds up.
-                </Heading>
-                <Text as="p" type="large" color="secondary">
-                  Set your dough target and baker’s percentages. We’ll account
-                  for the flour and water already in your starter.
-                </Text>
-              </VStack>
-              <AppearanceSelector />
-            </Grid>
-
-            <Grid columns={{ minWidth: 320, max: 2, repeat: 'fit' }} gap={6}>
-              <VStack gap={4}>
-                <VStack gap={1}>
-                  <Heading id="calculator-heading" level={2}>
-                    Recipe controls
+      mobileNav={false}
+      variant="surface"
+      topNav={
+        <TopNav
+          label="Sourdough navigation"
+          heading={
+            <TopNavHeading heading="Sourdough" headingHref="./" logo="🍞" />
+          }
+          endContent={<AppearanceToggle />}
+        />
+      }
+    >
+      <Layout
+        height="auto"
+        contentWidth={1100}
+        padding={6}
+        content={
+          <LayoutContent isScrollable={false}>
+            <VStack gap={10}>
+              <Center axis="horizontal" width="100%">
+                <VStack gap={3} hAlign="center" maxWidth={720}>
+                  <Text size="4xl">🍞</Text>
+                  <Heading
+                    level={1}
+                    type="display-1"
+                    color="accent"
+                    justify="center"
+                    textWrap="balance"
+                  >
+                    Build a loaf that adds up.
                   </Heading>
-                  <Text color="secondary">
-                    Changes update the recipe and its shareable URL.
+                  <Text
+                    as="p"
+                    type="large"
+                    color="secondary"
+                    justify="center"
+                    textWrap="balance"
+                  >
+                    Choose your dough weight and baker’s percentages. We’ll
+                    calculate everything you need for a delicious loaf.
                   </Text>
                 </VStack>
-                <CalculatorForm draft={draft} updateDraft={updateDraft} />
-              </VStack>
+              </Center>
 
-              <RecipeResult
-                input={recipe}
-                isCurrent={isComplete}
-                result={result}
-              />
-            </Grid>
-          </VStack>
-        </LayoutContent>
-      }
-    />
+              <Grid columns={{ minWidth: 320, max: 2, repeat: 'fit' }} gap={6}>
+                <Card padding={6}>
+                  <VStack gap={4}>
+                    <VStack gap={1}>
+                      <Heading id="calculator-heading" level={2}>
+                        Recipe controls
+                      </Heading>
+                      <Text color="secondary">
+                        Changes update the recipe and its shareable URL.
+                      </Text>
+                    </VStack>
+                    <CalculatorForm draft={draft} updateDraft={updateDraft} />
+                  </VStack>
+                </Card>
+
+                <RecipeResult
+                  input={recipe}
+                  isCurrent={isComplete}
+                  result={result}
+                />
+              </Grid>
+            </VStack>
+          </LayoutContent>
+        }
+      />
+    </AppShell>
   );
 }

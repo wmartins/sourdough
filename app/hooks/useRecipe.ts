@@ -62,7 +62,10 @@ export function useRecipe() {
     const next = { ...recipe, [field]: committed };
 
     setRecipe(next);
-    setSearchParams(serializeRecipeSearchParams(next), { replace: true });
+    setSearchParams(serializeRecipeSearchParams(next), {
+      preventScrollReset: true,
+      replace: true,
+    });
   }
 
   const result = useMemo(() => calculateRecipe(recipe), [recipe]);

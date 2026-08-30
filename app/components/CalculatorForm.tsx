@@ -1,5 +1,9 @@
 import { FormLayout } from '@astryxdesign/core/FormLayout';
+import { HStack } from '@astryxdesign/core/HStack';
 import { NumberInput } from '@astryxdesign/core/NumberInput';
+import { Slider } from '@astryxdesign/core/Slider';
+import { StackItem } from '@astryxdesign/core/Stack';
+import type { FormEvent } from 'react';
 
 import type { RecipeDraft, RecipeField } from '../hooks/useRecipe';
 
@@ -34,10 +38,86 @@ function changeDraft(
   };
 }
 
+function changeSlider(
+  field: RecipeField,
+  updateDraft: CalculatorFormProps['updateDraft'],
+) {
+  return (value: number) => updateDraft(field, String(value));
+}
+
+function percentage(value: number): string {
+  return `${value}%`;
+}
+
+type PercentageField = Exclude<RecipeField, 'weight'>;
+
+type PercentageControlProps = {
+  field: PercentageField;
+  label: string;
+  max: number;
+  step: number;
+  updateDraft: CalculatorFormProps['updateDraft'];
+  value: number;
+};
+
+function PercentageControl({
+  field,
+  label,
+  max,
+  step,
+  updateDraft,
+  value,
+}: PercentageControlProps) {
+  return (
+    <HStack gap={3} vAlign="end">
+      <StackItem size="fill">
+        <Slider
+          label={label}
+          description={descriptions[field]}
+          value={value}
+          onChange={changeSlider(field, updateDraft)}
+          min={0}
+          max={Math.max(max, value)}
+          step={step}
+          formatValue={percentage}
+          valueDisplay="none"
+          width="100%"
+        />
+      </StackItem>
+      <NumberInput
+        label={`${label} percentage`}
+        isLabelHidden
+        value={value}
+        onChange={changeDraft(field, updateDraft)}
+        min={0}
+        step={step}
+        units="%"
+        hasNumberSteppers
+        isWheelEnabled={false}
+        htmlName={field}
+        width={112}
+      />
+    </HStack>
+  );
+}
+
 export function CalculatorForm({ draft, updateDraft }: CalculatorFormProps) {
+  const hydration = draftNumber(draft.hydration) ?? 0;
+  const starter = draftNumber(draft.starter) ?? 0;
+  const salt = draftNumber(draft.salt) ?? 0;
+
+  function updateInput(event: FormEvent<HTMLFormElement>) {
+    const input = event.target;
+
+    if (input instanceof HTMLInputElement && input.name in descriptions) {
+      updateDraft(input.name as RecipeField, input.value);
+    }
+  }
+
   return (
     <form
       aria-labelledby="calculator-heading"
+      onInputCapture={updateInput}
       onSubmit={(event) => event.preventDefault()}
     >
       <FormLayout defaultOptionality="required">
@@ -60,62 +140,29 @@ export function CalculatorForm({ draft, updateDraft }: CalculatorFormProps) {
               : undefined
           }
         />
-        <NumberInput
-          label="True hydration"
-          description={descriptions.hydration}
-          value={draftNumber(draft.hydration)}
-          onChange={changeDraft('hydration', updateDraft)}
-          min={0}
-          step={0.1}
-          units="%"
-          hasClear
-          hasNumberSteppers
-          isWheelEnabled={false}
-          htmlName="hydration"
-          width="100%"
-          status={
-            draftNumber(draft.hydration) === null
-              ? { type: 'error', message: 'Enter a hydration percentage.' }
-              : undefined
-          }
+        <PercentageControl
+          field="hydration"
+          label="Hydration"
+          value={hydration}
+          max={120}
+          step={1}
+          updateDraft={updateDraft}
         />
-        <NumberInput
+        <PercentageControl
+          field="starter"
           label="Starter"
-          description={descriptions.starter}
-          value={draftNumber(draft.starter)}
-          onChange={changeDraft('starter', updateDraft)}
-          min={0}
-          step={0.1}
-          units="%"
-          hasClear
-          hasNumberSteppers
-          isWheelEnabled={false}
-          htmlName="starter"
-          width="100%"
-          status={
-            draftNumber(draft.starter) === null
-              ? { type: 'error', message: 'Enter a starter percentage.' }
-              : undefined
-          }
+          value={starter}
+          max={50}
+          step={0.5}
+          updateDraft={updateDraft}
         />
-        <NumberInput
+        <PercentageControl
+          field="salt"
           label="Salt"
-          description={descriptions.salt}
-          value={draftNumber(draft.salt)}
-          onChange={changeDraft('salt', updateDraft)}
-          min={0}
+          value={salt}
+          max={5}
           step={0.1}
-          units="%"
-          hasClear
-          hasNumberSteppers
-          isWheelEnabled={false}
-          htmlName="salt"
-          width="100%"
-          status={
-            draftNumber(draft.salt) === null
-              ? { type: 'error', message: 'Enter a salt percentage.' }
-              : undefined
-          }
+          updateDraft={updateDraft}
         />
       </FormLayout>
     </form>

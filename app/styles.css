@@ -1,6 +1,11 @@
 @import "@astryxdesign/core/reset.css";
 @import "@astryxdesign/core/astryx.css";
 @import "@astryxdesign/theme-butter/theme.css";
+@import "@fontsource/outfit/latin-400.css";
+@import "@fontsource/outfit/latin-500.css";
+@import "@fontsource/outfit/latin-600.css";
+@import "@fontsource/outfit/latin-700.css";
+@import "@fontsource/sarina/latin-400.css";
 
 @layer product {
   html,
@@ -9,7 +14,21 @@
     min-height: 100%;
   }
 
+  html {
+    scrollbar-gutter: stable;
+  }
+
   body {
     background: var(--color-background-body);
+  }
+
+  .astryx-heading.display-1,
+  .astryx-heading.display-2,
+  .astryx-heading.display-3 {
+    font-family: Sarina, "Brush Script MT", "Snell Roundhand", cursive;
+  }
+
+  .astryx-app-shell-header {
+    border-block-end: var(--border-width) solid var(--color-border);
   }
 }

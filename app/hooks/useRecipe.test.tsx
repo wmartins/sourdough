@@ -57,7 +57,7 @@ describe('useRecipe', () => {
 
     expect(result.current.form.draft.weight).toBe('-10');
     expect(result.current.form.isComplete).toBe(false);
-    expect(result.current.form.recipe.weight).toBe(750);
+    expect(result.current.form.recipe.weight).toBe(900);
     expect(result.current.location.search).toBe('');
   });
 
@@ -68,13 +68,13 @@ describe('useRecipe', () => {
 
     expect(result.current.form.draft.hydration).toBe('');
     expect(result.current.location.search).toBe('');
-    expect(result.current.form.recipe.hydration).toBe(70);
+    expect(result.current.form.recipe.hydration).toBe(65);
 
     act(() => result.current.form.updateDraft('hydration', '72.5'));
 
     await waitFor(() => {
       expect(result.current.location.search).toBe(
-        '?weight=750&hydration=72.5&starter=20&salt=2',
+        '?weight=900&hydration=72.5&starter=25&salt=2.5',
       );
     });
     expect(result.current.form.recipe.hydration).toBe(72.5);

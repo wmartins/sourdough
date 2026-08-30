@@ -25,7 +25,7 @@ describe('createRecipeUrl', () => {
         recipeDefaults,
       ),
     ).toBe(
-      'https://wmartins.github.io/sourdough/?weight=750&hydration=70&starter=20&salt=2',
+      'https://wmartins.github.io/sourdough/?weight=900&hydration=65&starter=25&salt=2.5',
     );
   });
 });

@@ -1,7 +1,6 @@
 import { Button } from '@astryxdesign/core/Button';
 import { Card } from '@astryxdesign/core/Card';
-import { Collapsible } from '@astryxdesign/core/Collapsible';
-import { Divider } from '@astryxdesign/core/Divider';
+import { Heading } from '@astryxdesign/core/Heading';
 import { Icon } from '@astryxdesign/core/Icon';
 import { VStack } from '@astryxdesign/core/Layout';
 import {
@@ -9,7 +8,6 @@ import {
   MetadataListItem,
 } from '@astryxdesign/core/MetadataList';
 import { Text } from '@astryxdesign/core/Text';
-import { Heading } from '@astryxdesign/core/Heading';
 import { useToast } from '@astryxdesign/core/Toast';
 import { VisuallyHidden } from '@astryxdesign/core/VisuallyHidden';
 import { useClipboard } from '@astryxdesign/core/hooks';
@@ -43,6 +41,14 @@ function weight(value: number): string {
   return `${grams.format(value)} g`;
 }
 
+function RecipeWeight({ value }: { value: number }) {
+  return (
+    <Text color="accent" hasTabularNumbers type="large">
+      {weight(value)}
+    </Text>
+  );
+}
+
 export function RecipeResult({ input, isCurrent, result }: RecipeResultProps) {
   const { copy, isCopied } = useClipboard({
     announce: 'Recipe link copied.',
@@ -63,59 +69,45 @@ export function RecipeResult({ input, isCurrent, result }: RecipeResultProps) {
   }
 
   return (
-    <Card elevation="low" padding={6}>
-      <VStack gap={5}>
-        <VStack gap={1}>
-          <Heading level={2}>Your dough</Heading>
-          <Text color="secondary">
-            {weight(input.weight)} total · {input.hydration}% true hydration
-          </Text>
-        </VStack>
-
-        {!isCurrent ? (
-          <Text color="secondary">
-            Complete every field to update this last valid recipe.
-          </Text>
-        ) : null}
-
-        <VisuallyHidden as="output" aria-live="polite">
-          Recipe updated. Flour {weight(result.flour)}, water{' '}
-          {weight(result.water)}, starter {weight(result.starter.total)}, and
-          salt {weight(result.salt)}.
-        </VisuallyHidden>
-
-        <MetadataList label={{ position: 'start' }}>
-          <MetadataListItem label="Flour">
-            {weight(result.flour)}
-          </MetadataListItem>
-          <MetadataListItem label="Water">
-            {weight(result.water)}
-          </MetadataListItem>
-          <MetadataListItem label="Starter">
-            {weight(result.starter.total)}
-          </MetadataListItem>
-          <MetadataListItem label="Salt">
-            {weight(result.salt)}
-          </MetadataListItem>
-        </MetadataList>
-
-        <Divider />
-
-        <Collapsible trigger="Inside the starter" defaultIsOpen={false}>
-          <VStack gap={2}>
+    <Card elevation="med" height="100%" padding={6}>
+      <VStack gap={5} height="100%" vAlign="between">
+        <VStack gap={5}>
+          <VStack gap={1}>
+            <Heading color="accent" level={2}>
+              Your dough
+            </Heading>
             <Text color="secondary">
-              At 100% hydration, the starter contains equal flour and water.
+              {weight(input.weight)} total · {input.hydration}% hydration
             </Text>
-            <MetadataList label={{ position: 'start' }}>
-              <MetadataListItem label="Flour">
-                {weight(result.starter.flour)}
-              </MetadataListItem>
-              <MetadataListItem label="Water">
-                {weight(result.starter.water)}
-              </MetadataListItem>
-            </MetadataList>
           </VStack>
-        </Collapsible>
+
+          {!isCurrent ? (
+            <Text color="secondary">
+              Complete every field to update this last valid recipe.
+            </Text>
+          ) : null}
+
+          <VisuallyHidden as="output" aria-live="polite">
+            Recipe updated. Flour {weight(result.flour)}, water{' '}
+            {weight(result.water)}, starter {weight(result.starter.total)}, and
+            salt {weight(result.salt)}.
+          </VisuallyHidden>
+
+          <MetadataList label={{ position: 'start' }}>
+            <MetadataListItem label="Flour">
+              <RecipeWeight value={result.flour} />
+            </MetadataListItem>
+            <MetadataListItem label="Water">
+              <RecipeWeight value={result.water} />
+            </MetadataListItem>
+            <MetadataListItem label="Starter">
+              <RecipeWeight value={result.starter.total} />
+            </MetadataListItem>
+            <MetadataListItem label="Salt">
+              <RecipeWeight value={result.salt} />
+            </MetadataListItem>
+          </MetadataList>
+        </VStack>
 
         <Button
           label={isCopied ? 'Recipe link copied' : 'Copy recipe link'}
