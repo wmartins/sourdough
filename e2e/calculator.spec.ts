@@ -76,6 +76,29 @@ test('updates the recipe and URL while typing', async ({ page }) => {
   await expect(page.getByText('800 g total · 65% hydration')).toBeVisible();
 });
 
+test('accepts typed digits after deleting part of the dough weight', async ({
+  page,
+}) => {
+  await page.goto('./');
+  const weight = page.getByRole('spinbutton', { name: 'Total dough weight' });
+
+  await weight.focus();
+  await weight.evaluate((input: HTMLInputElement) => {
+    input.setSelectionRange(input.value.length, input.value.length);
+  });
+  await weight.press('Backspace');
+  await expect(weight).toHaveValue('90');
+
+  await weight.pressSequentially('5');
+
+  await expect(weight).toHaveValue('905');
+  await expect(weight).toBeFocused();
+  await expect(page).toHaveURL(
+    /\?weight=905&hydration=65&starter=25&salt=2.5$/,
+  );
+  await expect(page.getByText('905 g total · 65% hydration')).toBeVisible();
+});
+
 test('accepts precise percentages from the input beside a slider', async ({
   page,
 }) => {

@@ -117,7 +117,9 @@ export function CalculatorForm({ draft, updateDraft }: CalculatorFormProps) {
   return (
     <form
       aria-labelledby="calculator-heading"
-      onInputCapture={updateInput}
+      // Capture-phase updates can restore NumberInput's previous text before
+      // its onChange receives the edit. Keep both updates in the bubble phase.
+      onInput={updateInput}
       onSubmit={(event) => event.preventDefault()}
     >
       <FormLayout defaultOptionality="required">
